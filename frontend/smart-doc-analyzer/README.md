@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# Smart Doc Analyzer Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This folder contains the React + TypeScript frontend (Vite).
 
-Currently, two official plugins are available:
+All commands below are written for Windows PowerShell.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What This Frontend Uses
 
-## React Compiler
+Main runtime libraries (from `package.json`):
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `react`, `react-dom`, `react-router-dom`
+- `axios`
+- `zustand`
+- `framer-motion`
+- `lucide-react`
+- `jspdf`
+- `sass`
 
-## Expanding the ESLint configuration
+Main dev/build libraries:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- `vite`
+- `typescript`
+- `eslint` + `typescript-eslint`
+- `tailwindcss`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Node.js 20+
+- npm
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Install Dependencies
+
+From this folder (`frontend/smart-doc-analyzer`):
+
+```powershell
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Run Frontend
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```powershell
+npm run dev
 ```
+
+Default frontend URL:
+
+- `http://localhost:5173`
+
+## Build and Preview
+
+```powershell
+npm run build
+npm run preview
+```
+
+## Backend Connection
+
+This frontend expects backend API at:
+
+- `http://localhost:8000`
+
+The base URL is defined in:
+
+- `src/api/axios.ts`
+
+There are also direct backend URL calls in:
+
+- `src/store/documentStore.ts`
+
+If backend host/port changes, update those files.
+
+## Auth/Cookies
+
+The frontend uses cookie-based auth (`withCredentials: true`), so backend CORS and cookie settings must match your frontend origin.

@@ -63,33 +63,25 @@ Required downloads at runtime:
 - Hugging Face model on first backend start:
 - `sentence-transformers/all-MiniLM-L6-v2`
 
+All commands below are written for Windows PowerShell.
+
 ## 1) Download the Project
 
 Clone the repository:
 
-```bash
+```powershell
 git clone <your-repo-url>
 cd Smart-Doc-Analyzer
 ```
 
 ## 2) Backend Setup
 
-Create and activate a virtual environment from the project root.
-
-PowerShell:
+Create and activate a virtual environment from the project root:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r backend\requirements.txt
-```
-
-Bash:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r backend/requirements.txt
 ```
 
 Create `backend/.env` with at least:
@@ -120,25 +112,16 @@ FEEDBACK_FROM_EMAIL=your_email@example.com
 
 Start backend from the project root:
 
-PowerShell:
-
 ```powershell
 $env:PYTHONPATH="backend"
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Bash:
-
-```bash
-export PYTHONPATH=backend
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
 ## 3) Ollama Setup
 
-In a separate terminal:
+In a separate PowerShell terminal:
 
-```bash
+```powershell
 ollama serve
 ollama pull kwangsuklee/gemma-3-12b-it-Q4_K_M:latest
 ollama pull qwen3-vl:8b
@@ -187,7 +170,7 @@ Before first push, make sure local/generated files are not staged:
 
 If this folder is not a Git repo yet:
 
-```bash
+```powershell
 git init
 git add .
 git restore --staged venv backend/venv backend/node_modules frontend/smart-doc-analyzer/node_modules frontend/smart-doc-analyzer/dist logs backend/logs
@@ -200,7 +183,7 @@ git push -u origin main
 
 Run this check before pushing:
 
-```bash
+```powershell
 git status
 ```
 
