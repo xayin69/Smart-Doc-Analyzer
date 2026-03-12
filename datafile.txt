@@ -1,0 +1,5 @@
+#virtual environment: .\venv\Scripts\activate
+#to get the folder root : $env:PYTHONPATH = "C:\Users\user\OneDrive\Desktop\Smart-Doc-Analyzer"
+#activate the backend : python -m uvicorn app.main:app --reload
+#when inside frontend/smart-doc-analyzer/ type this to activate frontend  -> : npm run dev       
+if Desktop freeze type this in task manager bar : explorer.exe

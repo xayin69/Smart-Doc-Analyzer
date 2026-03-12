@@ -1,0 +1,48 @@
+@use "sass:list";
+@use "sass:math";
+
+$stars: 220;
+$depth: 260;
+$speed: 9s;
+$width: 3000;
+$height: 1400;
+
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  perspective: 360px;
+}
+
+.stars::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  transform-style: preserve-3d;
+  animation: fly $speed linear infinite;
+
+  $box-shadow: ();
+  @for $i from 1 through $stars {
+    $x: (math.random($width) - math.div($width, 2)) * 1px;
+    $y: (math.random($height) - math.div($height, 2)) * 1px;
+    $a: math.div(55 + math.random(35), 100);
+    $box-shadow: list.append($box-shadow, #{$x} #{$y} rgba(255, 255, 255, $a), comma);
+  }
+  box-shadow: $box-shadow;
+}
+
+@keyframes fly {
+  from {
+    transform: translateZ(-$depth * 1px);
+    opacity: 0.35;
+  }
+  to {
+    transform: translateZ($depth * 1px);
+    opacity: 0.9;
+  }
+}

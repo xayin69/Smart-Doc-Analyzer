@@ -1,0 +1,15 @@
+venv/
+backend/venv/
+backend/node_modules/
+frontend/smart-doc-analyzer/node_modules/
+frontend/smart-doc-analyzer/dist/
+logs/
+backend/logs/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+backend/.env
+*.db
+.vscode/

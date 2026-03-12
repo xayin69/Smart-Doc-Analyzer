@@ -1,0 +1,64 @@
+.home-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(16px);
+  background: rgba(7, 18, 36, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home-navbar__inner {
+  width: 100%;
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.home-navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+  color: white;
+}
+
+.home-navbar__logo {
+  width: 2rem;
+  height: 2rem;
+}
+
+.home-navbar__title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.home-navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.home-navbar__link {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.home-navbar__signup {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .home-navbar__nav {
+    display: none;
+  }
+
+  .home-navbar__title {
+    display: none;
+  }
+}
