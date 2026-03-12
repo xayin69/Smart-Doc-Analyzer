@@ -3,3 +3,8 @@
 #activate the backend : python -m uvicorn app.main:app --reload
 #when inside frontend/smart-doc-analyzer/ type this to activate frontend  -> : npm run dev       
 if Desktop freeze type this in task manager bar : explorer.exe
+
+to download this repo :
+git clone https://github.com/xayin69/Smart-Doc-Analyzer.git
+cd Smart-Doc-Analyzer
+then follow README.md
