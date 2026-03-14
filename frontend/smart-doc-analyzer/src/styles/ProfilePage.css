@@ -1,0 +1,843 @@
+/* =====================================================
+   PROFILE PAGE — Fresh SaaS Aesthetic
+   pp- prefix to avoid collisions
+   ===================================================== */
+
+/* ── Main Layout ── */
+.pp-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Animated Background ── */
+.pp-bg {
+  position: absolute;
+  inset: 0;
+  background: #070b14;
+  overflow: hidden;
+}
+
+.pp-bg__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: ppOrbDrift 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+.pp-bg__orb--1 {
+  width: 520px;
+  height: 520px;
+  top: -10%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(99, 60, 220, 0.28) 0%, transparent 70%);
+  animation-duration: 14s;
+}
+
+.pp-bg__orb--2 {
+  width: 400px;
+  height: 400px;
+  top: 30%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, transparent 70%);
+  animation-duration: 10s;
+  animation-delay: -4s;
+}
+
+.pp-bg__orb--3 {
+  width: 350px;
+  height: 350px;
+  bottom: -5%;
+  left: 30%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+  animation-duration: 16s;
+  animation-delay: -8s;
+}
+
+.pp-bg__orb--4 {
+  width: 280px;
+  height: 280px;
+  top: 60%;
+  left: 5%;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+  animation-duration: 18s;
+  animation-delay: -2s;
+}
+
+@keyframes ppOrbDrift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -20px) scale(1.05); }
+  66%       { transform: translate(-20px, 15px) scale(0.97); }
+}
+
+/* Subtle dot grid */
+.pp-bg__grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(139, 92, 246, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 0%, transparent 100%);
+}
+
+/* Noise overlay for depth */
+.pp-bg__noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* Horizontal scan line */
+.pp-bg__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(139, 92, 246, 0.3) 30%, rgba(34, 211, 238, 0.4) 50%, rgba(139, 92, 246, 0.3) 70%, transparent 100%);
+  animation: ppScanLine 8s linear infinite;
+  top: 0;
+}
+
+@keyframes ppScanLine {
+  0%   { top: -2px; opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* ── Locked State ── */
+.pp-locked {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.pp-locked__icon-wrap {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 1.5rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pp-locked__icon {
+  width: 44px;
+  height: 44px;
+  color: #8b5cf6;
+}
+
+.pp-locked__title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #c4b5fd, #67e8f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.pp-locked__sub {
+  color: rgba(255,255,255,0.4);
+  font-size: 1rem;
+}
+
+/* ── Card Shell & Glow ── */
+.pp-shell {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 30rem;
+}
+
+.pp-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #6d28d9, #0e7490, #8b5cf6);
+  opacity: 0.35;
+  filter: blur(18px);
+  transition: opacity 0.5s ease, filter 0.5s ease;
+  pointer-events: none;
+}
+
+.pp-glow--active {
+  opacity: 0.6;
+  filter: blur(22px);
+  animation: ppGlowPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes ppGlowPulse {
+  0%, 100% { opacity: 0.5; filter: blur(20px); }
+  50%       { opacity: 0.75; filter: blur(26px); }
+}
+
+/* ── The Card ── */
+.pp-card {
+  position: relative;
+  background: rgba(10, 14, 26, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 32px 64px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Hero Banner ── */
+.pp-hero {
+  position: relative;
+  height: 110px;
+  overflow: visible;
+}
+
+.pp-hero__gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(88, 28, 235, 0.7) 0%,
+    rgba(14, 116, 144, 0.5) 50%,
+    rgba(109, 40, 217, 0.6) 100%
+  );
+}
+
+/* Abstract dot pattern on hero */
+.pp-hero__dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Thin bottom border line on hero */
+.pp-hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.6), rgba(34, 211, 238, 0.6), transparent);
+}
+
+/* Status chip */
+.pp-hero__chips {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.pp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pp-chip--view {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+.pp-chip--editing {
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: #c4b5fd;
+}
+
+.pp-chip__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: ppDotBlink 2s ease-in-out infinite;
+}
+
+@keyframes ppDotBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ── Avatar ── */
+.pp-avatar-wrap {
+  position: absolute;
+  bottom: -52px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+
+.pp-avatar-ring {
+  padding: 3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #22d3ee, #ec4899);
+  transition: all 0.4s ease;
+}
+
+.pp-avatar-ring--edit {
+  background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+  animation: ppAvatarSpin 3s linear infinite;
+}
+
+@keyframes ppAvatarSpin {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.pp-avatar {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #0d1117;
+  border: 3px solid rgba(10, 14, 26, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pp-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pp-avatar__placeholder {
+  width: 42px;
+  height: 42px;
+  color: rgba(255,255,255,0.25);
+}
+
+.pp-avatar__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  border-radius: 50%;
+}
+
+.pp-avatar:hover .pp-avatar__overlay {
+  opacity: 1;
+}
+
+.pp-avatar__overlay svg {
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+
+.pp-avatar__overlay span {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pp-avatar__name {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e6edf3;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.pp-avatar__email {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* ── Header Row ── */
+.pp-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 72px 1.75rem 1rem;
+  gap: 1rem;
+}
+
+.pp-header__title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #f0f6ff;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.pp-header__sub {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  margin-top: 3px;
+  font-weight: 400;
+}
+
+.pp-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Edit / Cancel toggle button */
+.pp-btn-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.01em;
+}
+
+.pp-btn-toggle svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.pp-btn-toggle--edit {
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #c4b5fd;
+}
+
+.pp-btn-toggle--edit:hover {
+  background: rgba(139, 92, 246, 0.22);
+  border-color: rgba(139, 92, 246, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.25);
+}
+
+.pp-btn-toggle--cancel {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.pp-btn-toggle--cancel:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.2);
+}
+
+/* ── Divider ── */
+.pp-btn-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.08);
+  color: #fca5a5;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+
+.pp-btn-logout svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.pp-btn-logout:hover {
+  background: rgba(239, 68, 68, 0.16);
+  border-color: rgba(239, 68, 68, 0.55);
+  color: #fecaca;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.18);
+}
+
+.pp-divider {
+  height: 1px;
+  margin: 0 1.75rem;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), rgba(34, 211, 238, 0.2), transparent);
+}
+
+/* ── Loading ── */
+.pp-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 3rem 1.75rem;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.875rem;
+}
+
+/* ── Spinner ── */
+.pp-spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(139, 92, 246, 0.15);
+  border-top-color: #8b5cf6;
+  border-radius: 50%;
+  animation: ppSpin 0.8s linear infinite;
+}
+
+.pp-spinner--sm {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+  flex-shrink: 0;
+}
+
+@keyframes ppSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Error ── */
+.pp-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 1.75rem;
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 12px;
+  color: #fca5a5;
+  font-size: 0.85rem;
+}
+
+.pp-error svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Form Body ── */
+.pp-body {
+  padding: 1.25rem 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.pp-row {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.pp-row--2col > * {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Field & Label ── */
+.pp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pp-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255,255,255,0.35);
+}
+
+.pp-label svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.pp-label--between {
+  justify-content: space-between;
+}
+
+.pp-label__left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pp-label__count {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.22);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ── Inputs ── */
+.pp-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.25s ease;
+  color: #e6edf3;
+}
+
+.pp-input--static {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.7);
+  cursor: default;
+}
+
+.pp-input--active {
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  color: #e6edf3;
+}
+
+.pp-input--active:focus {
+  border-color: rgba(139, 92, 246, 0.65);
+  background: rgba(139, 92, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.pp-input--active::placeholder {
+  color: rgba(255,255,255,0.2);
+}
+
+/* Date input color fix */
+input[type="date"].pp-input--static,
+input[type="date"].pp-input--active {
+  color-scheme: dark;
+}
+
+.pp-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+  resize: none;
+  transition: all 0.25s ease;
+  line-height: 1.55;
+}
+
+/* ── Email Row ── */
+.pp-email-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.pp-email-row__val {
+  flex: 1;
+  border-radius: 10px 0 0 10px !important;
+  border-right: none !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pp-btn-change {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  color: #93c5fd;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.pp-btn-change:hover {
+  background: rgba(59, 130, 246, 0.18);
+  color: #bfdbfe;
+}
+
+/* ── Gender ── */
+.pp-gender {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.pp-gender__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.45);
+  user-select: none;
+}
+
+.pp-gender__btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.pp-gender__btn:not(.pp-gender__btn--disabled):hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.7);
+}
+
+.pp-gender__btn--male-active {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  color: #93c5fd !important;
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.15);
+}
+
+.pp-gender__btn--female-active {
+  background: rgba(139, 92, 246, 0.15) !important;
+  border-color: rgba(139, 92, 246, 0.5) !important;
+  color: #c4b5fd !important;
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.15);
+}
+
+.pp-gender__btn--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ── Footer / Save ── */
+.pp-footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.pp-footer__inner {
+  padding: 1.25rem 1.75rem 1.5rem;
+}
+
+.pp-save-wrap {
+  position: relative;
+}
+
+.pp-save-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #6d28d9, #0e7490);
+  opacity: 0.5;
+  filter: blur(10px);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.pp-save-wrap:hover .pp-save-glow {
+  opacity: 0.8;
+}
+
+.pp-btn-save {
+  position: relative;
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 0.01em;
+  background: linear-gradient(135deg, #6d28d9 0%, #0e7490 100%);
+  color: white;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(109, 40, 217, 0.3);
+  overflow: hidden;
+}
+
+.pp-btn-save::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transition: left 0.5s ease;
+}
+
+.pp-btn-save:hover::before {
+  left: 100%;
+}
+
+.pp-btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(109, 40, 217, 0.45);
+}
+
+.pp-btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pp-btn-save svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}

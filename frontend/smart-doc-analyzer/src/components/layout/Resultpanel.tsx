@@ -17,6 +17,7 @@ import FeedbackModal from "../common/FeedbackModal";
 import api from "../../api/axios";
 import type { HistoryDocument } from "../../types/document";
 import AnimatedSmartDocIcon from "../icons/AnimatedSmartDocIcon";
+import "./WorkSpacestyles/results-panel.css";
 
 const ResultsPanel = () => {
   const { selectedDocument, selectDocument, setDocuments, isProcessing } =
@@ -216,26 +217,26 @@ const ResultsPanel = () => {
 
   if (isProcessing) {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center">
-        <div className="mb-6">
-          <div className="text-[#8B949E] text-xs uppercase tracking-widest mb-1 font-medium alyamama">
+      <div className="results-loading">
+        <div className="loading-file-info">
+          <div className="loading-file-label alyamama">
             File
           </div>
-          <div className="text-white text-sm font-medium inter">
+          <div className="loading-file-name inter">
             {selectedDocument?.filename}
           </div>
         </div>
 
-        <div className="w-14 h-14 border-4 border-[#58A6FF] border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="loading-spinner" />
 
-        <p className="text-[#E6EDF3] text-sm inter">Executing request...</p>
+        <p className="loading-text inter">Executing request...</p>
       </div>
     );
   }
 
   if (!selectedDocument || selectedDocument.tasks?.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-[#8B949E] text-sm inter">
+      <div className="results-empty inter">
         No results yet!
       </div>
     );
@@ -251,9 +252,9 @@ const ResultsPanel = () => {
   const latestTaskId = sortedTasks[sortedTasks.length - 1]?.task_id;
 
   return (
-    <div className="h-full min-h-0 flex flex-col p-6 overflow-hidden inter">
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-        <div className="flex flex-col gap-4">
+    <div className="results-container">
+      <div className="results-scroll">
+        <div className="results-grid">
           {sortedTasks.map((task) => {
             const isLatest = task.task_id === latestTaskId;
             const isRated = ratedTasks.has(task.task_id);
@@ -262,54 +263,42 @@ const ResultsPanel = () => {
             const isDeleting = deletingTaskId === task.task_id;
 
             return (
-              <div key={task.task_id} className="flex flex-col gap-6">
+              <div key={task.task_id} className="result-card-wrapper">
                 <div className="flex justify-end">
                   <InputSummary filename={selectedDocument.filename} task={task} />
                 </div>
 
                 <div
-                  className={`cyber-pattern rounded-none p-6 transition-all duration-300 shadow-lg ${
-                    isLatest
-                      ? "border border-cyan-300 animate-fadeInUp shadow-[0_0_14px_rgba(34,211,238,0.35)]"
-                      : "border border-cyan-500/60"
-                  } ${isDeleting ? "animate-cardVanish" : ""}`}
+                  className={`result-card ${isLatest ? "latest" : ""} ${isDeleting ? "deleting" : ""}`}
                 >
-                  <div className="flex items-center justify-between mb-4 pb-3 border-b border-cyan-300/30">
-                    <div className="flex items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={() => navigate("/")}
-                        className="flex items-center gap-3 opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
-                        title="Go to Home"
-                      >
-                        <AnimatedSmartDocIcon />
-                        <span className="rubik-maps-regular rainbow-text text-sm pulsate-fwd">
-                          Smart Doc Analyzer
-                        </span>
-                      </button>
-                    </div>
-
-                    <div className="flex justify-end "> 
-                      <span className="text-xs text-cyan-200 tracking-wide alyamama -translate-x-3"> 
-                        {isLatest ? "Current Result" : "Previous Result" }  
+                  <div className="result-card-header">
+                    <button
+                      type="button"
+                      onClick={() => navigate("/")}
+                      className="result-branding"
+                      title="Go to Home"
+                    >
+                      <AnimatedSmartDocIcon />
+                      <span className="result-branding-text rubik-maps-regular">
+                        Smart Doc Analyzer
                       </span>
-                    </div>
+                    </button>
+
+                    <span className="result-status-badge alyamama">
+                      {isLatest ? "Current Result" : "Previous Result"}
+                    </span>
                   </div>
 
-                  <div className="text-white whitespace-pre-wrap text-sm leading-relaxed mb-4 inter">
+                  <div className="result-card-content inter">
                     {task.result_text}
-                  </div>    
+                  </div>
 
-                  <div className="border-t border-cyan-300/30 pt-4 flex justify-between items-center">
+                  <div className="result-card-footer">
                     <button
                       onClick={() => handleRate(task.task_id)}
                       disabled={isRated}
                       title="Rate"
-                      className={`group relative text-white/90 text-sm transition ${
-                        isRated
-                          ? "opacity-80 cursor-not-allowed"
-                          : "hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.75)]"
-                      }`}
+                      className={`result-action-btn ${isRated ? "rated" : ""}`}
                     >
                       <span className="inline-flex items-center gap-2">
                         {isRated ? (
@@ -321,11 +310,11 @@ const ResultsPanel = () => {
                       </span>
                     </button>
 
-                    <div className="flex items-center gap-4">
+                    <div className="result-action-group">
                       <button
                         onClick={() => handleDeleteTask(task.task_id)}
                         disabled={isDeleting}
-                        className="text-white/85 hover:text-red-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="result-action-btn delete-btn"
                         title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -333,7 +322,7 @@ const ResultsPanel = () => {
 
                       <button
                         onClick={() => handleCopy(task.task_id, task.result_text)}
-                        className="text-white/85 hover:text-cyan-100 transition"
+                        className="result-action-btn"
                         title={isCopied ? "Copied" : "Copy"}
                       >
                         {isCopied ? (
@@ -346,7 +335,7 @@ const ResultsPanel = () => {
                       <button
                         onClick={() => handleConvert(task.task_id, task.result_text)}
                         disabled={convertingTaskId !== null}
-                        className="text-white/85 hover:text-cyan-100 transition disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="result-action-btn"
                         title={
                           convertingTaskId === task.task_id
                             ? "Converting..."

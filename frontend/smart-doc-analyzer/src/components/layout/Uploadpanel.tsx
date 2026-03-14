@@ -22,7 +22,8 @@ import TranslateIcon from "../icons/TranslateIcon";
 import RagIcon from "../icons/RagIcon";
 import SentimentIcon from "../icons/SentimentIcon";
 import TopicIcon from "../icons/TopicIcon";
-import "./Chatbox.css";
+import "./WorkSpacestyles/upload-panel.css";
+import "./WorkSpacestyles/chatbox.css";
 
 type TaskOption = {
   type: TaskType;
@@ -60,16 +61,13 @@ const UploadPanel = () => {
 
   useEffect(() => {
     if (uploadError) {
-      const timer = setTimeout(() => {
-        setUploadError(null);
-      }, 5000);
+      const timer = setTimeout(() => setUploadError(null), 5000);
       return () => clearTimeout(timer);
     }
   }, [uploadError]);
 
   useEffect(() => {
     if (!showMoreMethods) return;
-
     const handleOutsideClick = (event: MouseEvent) => {
       if (
         moreMethodsRef.current &&
@@ -78,7 +76,6 @@ const UploadPanel = () => {
         setShowMoreMethods(false);
       }
     };
-
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [showMoreMethods]);
@@ -90,11 +87,8 @@ const UploadPanel = () => {
 
     try {
       setProcessing(true);
-
       await api.post("/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       const res = await api.get<HistoryDocument[]>("/history");
@@ -104,10 +98,7 @@ const UploadPanel = () => {
         (a, b) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       );
-
-      if (sorted.length > 0) {
-        selectDocument(sorted[0]);
-      }
+      if (sorted.length > 0) selectDocument(sorted[0]);
     } catch (err) {
       const axiosErr = err as AxiosError<{ detail?: string }>;
       const detail = axiosErr.response?.data?.detail;
@@ -135,11 +126,8 @@ const UploadPanel = () => {
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
-
     const file = e.dataTransfer.files?.[0];
-    if (file) {
-      handleUpload(file);
-    }
+    if (file) handleUpload(file);
   };
 
   const executeTask = async () => {
@@ -164,9 +152,7 @@ const UploadPanel = () => {
         model_name: selectedModel,
       });
 
-      if (selectedTask === "rag") {
-        setChatInput("");
-      }
+      if (selectedTask === "rag") setChatInput("");
 
       const res = await api.get<HistoryDocument[]>("/history");
       setDocuments(res.data);
@@ -174,10 +160,7 @@ const UploadPanel = () => {
       const updated = res.data.find(
         (doc) => doc.document_id === selectedDocument.document_id
       );
-
-      if (updated) {
-        selectDocument(updated);
-      }
+      if (updated) selectDocument(updated);
     } catch (err) {
       console.error("Task execution failed:", err);
     } finally {
@@ -203,9 +186,7 @@ const UploadPanel = () => {
   const handleChatKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (isSubmitEnabled) {
-        void executeTask();
-      }
+      if (isSubmitEnabled) void executeTask();
     }
   };
 
@@ -215,54 +196,50 @@ const UploadPanel = () => {
 
   return (
     <div
-      className={`p-6 relative ${
-        isDragging ? "ring-2 ring-[#58A6FF] rounded-2xl" : ""
-      }`}
+      className="upload-container"
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
       {isDragging && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0D1117]/70 rounded-2xl pointer-events-none">
-          <div className="px-6 py-3 rounded-xl bg-[#161B22] text-[#E6EDF3] text-sm font-medium border border-[#30363D] shadow-lg">
-            Drop a  file to upload
-          </div>
+        <div className="drag-overlay">
+          <div className="drag-overlay-text">Drop a file to upload</div>
         </div>
       )}
 
       {uploadError && (
-        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 animate-uploadErrorToast">
-          <div className="px-6 py-3 rounded-full bg-red-500 text-white text-sm font-semibold shadow-2xl border border-red-300">
-            {uploadError}
-          </div>
+        <div className="upload-error-toast">
+          <div className="upload-error-content">{uploadError}</div>
         </div>
       )}
 
+      {/* ── Drop zone ─────────────────────────────────────────── */}
+      {/* FIX: items-center + justify-center so the file info is always centred */}
       <div
         onClick={() => fileInputRef.current?.click()}
-        className="mb-6 border-2 border-dashed border-[#30363D] rounded-2xl p-8 text-center cursor-pointer hover:border-[#58A6FF] hover:bg-[#1C2128] transition bg-[#0D1117]"
+        className={`upload-dropzone ${selectedDocument ? "uploaded" : ""} ${isDragging ? "dragging" : ""}`}
       >
         {selectedDocument ? (
-          <div className="flex items-center justify-center gap-3">
-            <CloudCheck className="w-11 h-11 text-[#58A6FF]" />
-            {uploadedFileIcon && (
-              <img
-                src={uploadedFileIcon}
-                alt="Uploaded file"
-                className="w-8 h-8 object-contain"
-              />
-            )}
-            <div className="text-left">
-              <p className="text-[#E6EDF3] text-sm font-medium">Uploaded</p>
-              <p className="text-[#8B949E] text-xs truncate max-w-[220px]">
-                {selectedDocument.filename}
-              </p>
+          <div className="upload-file-display">
+            <CloudCheck className="upload-icon" />
+            <div className="upload-file-main">
+              {uploadedFileIcon && (
+                <img
+                  src={uploadedFileIcon}
+                  alt="File"
+                  className="upload-file-icon"
+                />
+              )}
+              <div className="upload-file-info">
+                <p className="upload-file-status">Uploaded</p>
+                <p className="upload-file-name">{selectedDocument.filename}</p>
+              </div>
             </div>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center text-center">
-            <CloudUpload className="w-10 h-10 mx-auto mb-2 text-[#58A6FF]" />
-            <p className="text-[#E6EDF3] text-sm font-medium">Upload a Document</p>
+            <CloudUpload className="upload-icon" />
+            <p className="upload-text-primary">Upload a Document</p>
           </div>
         )}
 
@@ -271,102 +248,115 @@ const UploadPanel = () => {
           type="file"
           className="hidden"
           onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              handleUpload(e.target.files[0]);
-            }
+            if (e.target.files?.[0]) handleUpload(e.target.files[0]);
           }}
         />
       </div>
 
-      {isChatMode ? (
-        <div className="mb-4 animate-swapMorph chatbox-wrap">
-          <div className="grid"></div>
-          <div id="poda">
-            <div className="glow"></div>
-            <div className="darkBorderBg"></div>
-            <div className="darkBorderBg"></div>
-            <div className="darkBorderBg"></div>
-            <div className="white"></div>
-            <div className="border"></div>
+      {/* ── Chat / Analyze area ───────────────────────────────── */}
+      {/*
+        FIX: Both the chatbox (#poda) and the analyze button are wrapped in
+        chat-or-analyze-wrapper which already constrains the width.
+        The Analyze button now uses the class "analyze-button-full" which
+        stretches to 100% of that wrapper — exactly like the chatbox does.
+        To change the button size, adjust .chat-or-analyze-wrapper width in
+        upload-panel.css (it currently mirrors the #poda max-width).
+      */}
+      <div className="chat-or-analyze-wrapper">
+        {isChatMode ? (
+          <div className="chatbox-wrap">
+            <div className="grid"></div>
+            <div id="poda">
+              <div className="glow"></div>
+              <div className="darkBorderBg"></div>
+              <div className="darkBorderBg"></div>
+              <div className="darkBorderBg"></div>
+              <div className="white"></div>
+              <div className="border"></div>
 
-            <div id="main">
-              <textarea
-                ref={chatTextareaRef}
-                placeholder="Enter as chat here..."
-                name="text"
-                className="input"
-                value={chatInput}
-                onChange={(e) => setChatInput(e.target.value)}
-                onKeyDown={handleChatKeyDown}
-                rows={1}
-              />
-              <div id="input-mask"></div>
-              <div id="pink-mask"></div>
-              <div className="filterBorder"></div>
+              <div id="main">
+                <textarea
+                  ref={chatTextareaRef}
+                  placeholder="Enter as chat here..."
+                  name="text"
+                  className="input"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={handleChatKeyDown}
+                  rows={1}
+                />
+                <div id="input-mask"></div>
+                <div id="pink-mask"></div>
+                <div className="filterBorder"></div>
 
-              <button
-                id="filter-icon"
-                disabled={!isSubmitEnabled}
-                onClick={() => void executeTask()}
-                title="Send"
-                type="button"
-              >
-                <ArrowUp size={18} />
-              </button>
+                <button
+                  id="filter-icon"
+                  disabled={!isSubmitEnabled}
+                  onClick={() => void executeTask()}
+                  title="Send"
+                  type="button"
+                >
+                  <ArrowUp size={18} />
+                </button>
 
-              <div id="search-icon">
-                <Search size={20} />
+                <div id="search-icon">
+                  <Search size={20} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div className="mb-6 flex justify-center animate-swapMorph">
-          <button
-            disabled={!isSubmitEnabled}
-            onClick={executeTask}
-            className="super-button"
-            title="Execute"
-          >
-            <span>Analyze</span>
-            <ArrowUp className="super-arrow" />
-          </button>
-        </div>
-      )}
+        ) : (
+          /* FIX: w-full so it matches the chatbox width exactly */
+          <div className="analyze-button-wrapper w-full">
+            <button
+              className="analyze-button w-full"
+              disabled={!isSubmitEnabled}
+              onClick={executeTask}
+              title="Execute"
+            >
+              <span>Analyze</span>
+              <ArrowUp className="analyze-button-icon" />
+            </button>
+          </div>
+        )}
+      </div>
 
-      <div className="flex items-center gap-3 flex-wrap justify-center relative">
+      {/* ── Task method buttons ───────────────────────────────── */}
+      <div className="task-methods-container">
         {taskOptions.map(({ type, Icon, label }) => {
           const isActive = selectedTask === type;
-          const animating = isActive;
-
           const iconAnimationClass =
             type === "summarize"
-              ? `${animating ? "animate-noteLoop" : ""} icon-noteLoop`
+              ? "icon-noteLoop"
               : type === "sentiment"
-              ? `${animating ? "animate-moodLoop" : ""} icon-moodLoop`
+              ? "icon-moodLoop"
               : type === "rag"
-              ? `${animating ? "animate-ragLoop" : ""} icon-ragLoop`
+              ? "icon-ragLoop"
               : type === "topic"
-              ? `${animating ? "animate-libraryLoop" : ""} icon-libraryLoop`
-              : `${animating ? "animate-langLoop" : ""} icon-langLoop`;
+              ? "icon-libraryLoop"
+              : "icon-langLoop";
 
           return (
             <button
               key={type}
               onClick={() => setSelectedTask(isActive ? null : type)}
-              className={`relative group task-method-btn ${isActive ? "task-active" : ""} rounded-xl font-medium transition-all duration-300 min-w-[110px]`}
+              className={`task-method-button group ${isActive ? "active" : ""}`}
             >
-              <div className="task-shine absolute z-[4] -translate-x-44 group-hover:translate-x-[30rem] ease-in transition-all duration-700 h-full w-44 bg-gradient-to-r from-gray-400 to-white/10 opacity-35 -skew-x-12 pointer-events-none" />
-              <div className="task-orbit-ring" />
-              <div className="task-spin-halo" />
+              <div className="task-border-ring" />
+              <div className="task-glow-halo" />
+              <div className="task-shine" />
 
-              <div
-                className={`task-method-inner relative z-[2] flex flex-col items-center gap-1 px-4 py-3 rounded-[10px] ${
-                  isActive ? "task-method-inner-active text-white" : "text-[#E6EDF3]"
-                }`}
-              >
-                <Icon className={`w-5 h-5 transition-transform ${iconAnimationClass}`} />
-                <span className="text-xs rozha-one-regular">{label}</span>
+              <div className="task-method-inner">
+                <Icon
+                  className={`task-method-icon ${iconAnimationClass} ${
+                    type === "summarize" && isActive ? "animate-noteLoop" : ""
+                  } ${type === "sentiment" && isActive ? "animate-moodLoop" : ""} ${
+                    type === "rag" && isActive ? "animate-ragLoop" : ""
+                  } ${type === "topic" && isActive ? "animate-libraryLoop" : ""} ${
+                    type === "translate" && isActive ? "animate-langLoop" : ""
+                  }`.trim()}
+                />
+                <span className="task-method-label">{label}</span>
               </div>
             </button>
           );
@@ -376,7 +366,7 @@ const UploadPanel = () => {
           <button
             type="button"
             onClick={() => setShowMoreMethods((prev) => !prev)}
-            className="text-[#8B949E] hover:text-[#E6EDF3] transition"
+            className="more-methods-button text-[#8B949E] hover:text-[#E6EDF3] transition"
             title="More methods"
           >
             {showMoreMethods ? (

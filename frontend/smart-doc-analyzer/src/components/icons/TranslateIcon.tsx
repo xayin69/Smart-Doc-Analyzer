@@ -1,5 +1,48 @@
 type IconProps = { className?: string };
 
+const translateIconStyles = `
+  .lang-a, .lang-b {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @keyframes swapA {
+    0%, 20% { transform: translate(0px, 0px) scale(1); opacity: 1; }
+    50% { transform: translate(8.3px, 8.8px) scale(0.95); opacity: 0.86; }
+    80%, 100% { transform: translate(0px, 0px) scale(1); opacity: 1; }
+  }
+
+  @keyframes swapB {
+    0%, 20% { transform: translate(0px, 0px) scale(1); opacity: 1; }
+    50% { transform: translate(-8.3px, -8.8px) scale(0.95); opacity: 0.86; }
+    80%, 100% { transform: translate(0px, 0px) scale(1); opacity: 1; }
+  }
+
+  @keyframes langFlow {
+    0%, 100% { stroke-dashoffset: 28; opacity: 0.18; }
+    50% { stroke-dashoffset: 0; opacity: 0.42; }
+  }
+
+  @keyframes langDotPulse {
+    0%, 100% { opacity: 0.34; transform: scale(1); }
+    50% { opacity: 0.72; transform: scale(1.18); }
+  }
+
+  .lang-flow {
+    stroke-dasharray: 14;
+  }
+
+  .animate-langLoop .lang-a { animation: swapA 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+  .animate-langLoop .lang-b { animation: swapB 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+  .animate-langLoop .lang-flow { animation: langFlow 1.35s ease-in-out infinite; }
+  .animate-langLoop .lang-dot { animation: langDotPulse 1.35s ease-in-out infinite; transform-origin: center; }
+
+  .group:hover .icon-langLoop .lang-a { animation: swapA 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+  .group:hover .icon-langLoop .lang-b { animation: swapB 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+  .group:hover .icon-langLoop .lang-flow { animation: langFlow 1.35s ease-in-out infinite; }
+  .group:hover .icon-langLoop .lang-dot { animation: langDotPulse 1.35s ease-in-out infinite; transform-origin: center; }
+`;
+
 const TranslateIcon = ({ className }: IconProps) => {
   return (
     <svg
@@ -9,6 +52,7 @@ const TranslateIcon = ({ className }: IconProps) => {
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <style>{translateIconStyles}</style>
       {/* soft swap track (no arrows) */}
       <path
         className="lang-flow"

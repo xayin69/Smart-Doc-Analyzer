@@ -1,0 +1,396 @@
+/* =====================================================
+   RESULTS PANEL - Cyberpunk Card Design
+   ===================================================== */
+
+/* Results Container */
+.results-container {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+.results-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.5rem;
+}
+
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =====================================================
+   RESULT CARD - Cyberpunk Style
+   ===================================================== */
+
+.result-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: resultCardEnter 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+@keyframes resultCardEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.95);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+.result-card {
+  position: relative;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgba(15, 15, 20, 0.95), rgba(25, 20, 35, 0.9));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  padding: 1.5rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(139, 92, 246, 0.1) inset;
+}
+
+/* Cyber Grid Background */
+.result-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.3) 90%),
+    linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(236, 72, 153, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236, 72, 153, 0.03) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    50px 50px,
+    50px 50px,
+    20px 20px,
+    20px 20px;
+  animation: cyberGridMove 15s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes cyberGridMove {
+  0% {
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+  }
+  100% {
+    background-position:
+      0 0,
+      50px 50px,
+      50px 50px,
+      40px 40px,
+      40px 40px;
+  }
+}
+
+/* Latest Result Highlight */
+.result-card.latest {
+  border-color: var(--cyan-primary);
+  box-shadow: 
+    0 12px 32px rgba(34, 211, 238, 0.25),
+    0 0 0 1px rgba(34, 211, 238, 0.3) inset,
+    0 0 40px rgba(34, 211, 238, 0.15);
+  animation: resultCardEnter 0.5s ease backwards, latestPulse 3s ease-in-out infinite;
+}
+
+@keyframes latestPulse {
+  0%, 100% {
+    box-shadow: 
+      0 12px 32px rgba(34, 211, 238, 0.25),
+      0 0 0 1px rgba(34, 211, 238, 0.3) inset,
+      0 0 40px rgba(34, 211, 238, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 12px 32px rgba(34, 211, 238, 0.35),
+      0 0 0 1px rgba(34, 211, 238, 0.5) inset,
+      0 0 50px rgba(34, 211, 238, 0.25);
+  }
+}
+
+/* Card Deletion Animation */
+.result-card.deleting {
+  animation: cardVanish 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes cardVanish {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) translateY(-10px);
+    filter: blur(6px);
+  }
+}
+
+/* =====================================================
+   CARD HEADER
+   ===================================================== */
+
+.result-card-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.result-branding {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.result-branding:hover {
+  opacity: 1;
+}
+
+.result-branding-text {
+  font-size: 0.875rem;
+  background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bff95, #6bc6ff, #c06bff, #ff6b6b);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbowShift 4s linear infinite;
+}
+
+.result-status-badge {
+  font-size: 0.75rem;
+  color: var(--cyan-light);
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.75rem;
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  border-radius: 999px;
+  transition: all 0.3s ease;
+}
+
+.result-card.latest .result-status-badge {
+  background: rgba(34, 211, 238, 0.2);
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+}
+
+/* =====================================================
+   CARD CONTENT
+   ===================================================== */
+
+.result-card-content {
+  position: relative;
+  z-index: 2;
+  color: var(--text);
+  white-space: pre-wrap;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.result-card-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.result-card-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--purple-primary), var(--pink-accent));
+  border-radius: 3px;
+}
+
+/* =====================================================
+   CARD FOOTER - Action Buttons
+   ===================================================== */
+
+.result-card-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.result-action-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.result-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.result-action-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--purple-primary), var(--pink-accent));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.result-action-btn:hover:not(:disabled) {
+  color: white;
+  border-color: var(--purple-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.result-action-btn:hover:not(:disabled)::before {
+  opacity: 0.2;
+}
+
+.result-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Rate Button Variants */
+.result-action-btn.rated {
+  border-color: var(--pink-accent);
+  color: var(--pink-light);
+}
+
+.result-action-btn.delete-btn:hover {
+  border-color: var(--error);
+  color: var(--error);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* =====================================================
+   LOADING STATE
+   ===================================================== */
+
+.results-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.loading-spinner {
+  width: 56px;
+  height: 56px;
+  border: 4px solid transparent;
+  border-top-color: var(--cyan-primary);
+  border-right-color: var(--purple-primary);
+  border-bottom-color: var(--pink-accent);
+  border-radius: 50%;
+  animation: spinGradient 1.2s linear infinite;
+}
+
+@keyframes spinGradient {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+.loading-file-info {
+  margin-bottom: 1.5rem;
+}
+
+.loading-file-label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+.loading-file-name {
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
+
+.results-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 900px) {
+  .results-container {
+    padding: 1rem;
+  }
+  
+  .result-card {
+    padding: 1rem;
+  }
+  
+  .result-action-group {
+    gap: 0.5rem;
+  }
+  
+  .result-action-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}

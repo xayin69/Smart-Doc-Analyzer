@@ -1,0 +1,381 @@
+/* =====================================================
+   RIGHT PANEL - Profile & Model Selector
+   ===================================================== */
+
+/* Right Panel Container */
+.right-panel-container {
+  height: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =====================================================
+   PROFILE SECTION
+   ===================================================== */
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+/* Profile Avatar */
+.profile-avatar-link {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple-primary), var(--pink-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 700;
+  border: 3px solid rgba(139, 92, 246, 0.3);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.profile-avatar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.08) translateY(-4px);
+  border-color: var(--purple-light);
+  box-shadow: 
+    0 8px 24px rgba(139, 92, 246, 0.4),
+    0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+.profile-avatar:hover::before {
+  opacity: 1;
+}
+
+.profile-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Profile Info */
+.profile-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+  text-align: center;
+}
+
+.profile-email {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Logout Button */
+.profile-logout-btn {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: linear-gradient(135deg, var(--error), #dc2626);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-logout-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.profile-logout-btn:hover::before {
+  transform: translateX(100%);
+}
+
+.profile-logout-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(239, 68, 68, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+/* Auth Buttons (Not Logged In) */
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.auth-btn {
+  padding: 0.65rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-btn-login {
+  background: rgba(22, 27, 34, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: var(--text);
+}
+
+.auth-btn-login:hover {
+  background: rgba(28, 33, 40, 0.9);
+  border-color: var(--purple-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+.auth-btn-signup {
+  background: linear-gradient(135deg, var(--purple-primary), var(--pink-accent));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.auth-btn-signup::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.auth-btn-signup:hover::before {
+  transform: translateX(100%);
+}
+
+.auth-btn-signup:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(139, 92, 246, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+/* =====================================================
+   MODEL SELECTOR SECTION
+   ===================================================== */
+
+.model-selector-section {
+  padding-top: 1rem;
+}
+
+.model-selector-title {
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Select Dropdown */
+.model-select-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.model-select {
+  width: 100%;
+  padding: 0.65rem 2.25rem 0.65rem 0.85rem;
+  background: rgba(15, 15, 20, 0.6);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 0.5rem;
+  color: var(--text);
+  font-size: 0.8rem;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.3s ease;
+}
+
+.model-select:hover {
+  background: rgba(15, 15, 20, 0.8);
+  border-color: var(--purple-light);
+}
+
+.model-select:focus {
+  outline: none;
+  border-color: var(--purple-primary);
+  box-shadow: 
+    0 0 0 3px rgba(139, 92, 246, 0.15),
+    0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+.model-select option {
+  background: var(--panel-bg);
+  color: var(--text);
+}
+
+/* Dropdown Icon */
+.model-select-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.model-select:focus ~ .model-select-icon {
+  transform: translateY(-50%) rotate(180deg);
+  color: var(--purple-light);
+}
+
+/* =====================================================
+   MODEL DESCRIPTION - Notepad Style
+   ===================================================== */
+
+.model-description-wrapper {
+  margin-top: 1rem;
+}
+
+.model-description {
+  position: relative;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 0.5rem;
+  background: rgba(13, 17, 23, 0.8);
+  color: var(--text-muted);
+  min-height: 260px;
+  max-height: 260px;
+  overflow: hidden;
+}
+
+.model-description-body {
+  position: relative;
+  z-index: 2;
+  height: 260px;
+  overflow-y: auto;
+  padding: 0.75rem;
+  line-height: 1.85;
+  font-size: 0.8rem;
+  white-space: pre-line;
+  scrollbar-gutter: stable;
+}
+
+/* Lined Paper Effect */
+.model-description-body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 calc(1.85em - 2px),
+    rgba(139, 92, 246, 0.15) calc(1.85em - 2px) calc(1.85em)
+  );
+  background-size: 100% 1.85em;
+}
+
+.model-description-title {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--purple-light);
+  margin-bottom: 0.5em;
+}
+
+/* Typewriter Effect */
+.model-description-text {
+  color: var(--text);
+  opacity: 0;
+  animation: typewriterFade 0.05s ease forwards;
+}
+
+@keyframes typewriterFade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scrollbar */
+.model-description-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.model-description-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.model-description-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--purple-primary), var(--pink-accent));
+  border-radius: 3px;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 900px) {
+  .right-panel-container {
+    padding: 1rem;
+  }
+  
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.5rem;
+  }
+  
+  .model-description {
+    min-height: 200px;
+    max-height: 200px;
+  }
+  
+  .model-description-body {
+    height: 200px;
+  }
+}

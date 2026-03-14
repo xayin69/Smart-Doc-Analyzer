@@ -4,7 +4,15 @@
   box-sizing: border-box;
   min-height: 100vh;
   color: white;
-  background: #050505;
+  background: #000000;
+}
+
+/* Wrapper that the Vortex uses as its outer container.
+   Must be position:relative so the absolute canvas inside
+   can track real content height via ResizeObserver. */
+.homepage-vortex-wrapper {
+  position: relative;
+  width: 100%;
 }
 
 .home-page__vortex-bg {

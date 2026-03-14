@@ -10,6 +10,7 @@ import {
 
 import type { TaskResult } from "../../types/document";
 import { getFileIconByName } from "../../utils/fileIcons";
+import "./WorkSpacestyles/Input-summary.css";
 
 interface Props {
   filename: string;
@@ -26,6 +27,7 @@ const InputSummary = ({ filename, task }: Props) => {
   };
 
   const MethodIcon = methodIcons[task.task_type] || FileText;
+  
   const displayMethod =
     task.task_type === "qa"
       ? "RAG"
@@ -33,25 +35,41 @@ const InputSummary = ({ filename, task }: Props) => {
 
   const normalizedQuestion = task.question?.trim().replace(/^['"]+|['"]+$/g, "");
 
+  // Determine variant class based on task type
+  const variantClass = 
+    task.task_type === "qa" ? "variant-rag" :
+    task.task_type === "translate" ? "variant-translate" :
+    task.task_type === "sentiment" ? "variant-sentiment" :
+    "";
+
   return (
-    <div className="min-w-[260px] max-w-[520px] border border-[#4b3b73] rounded-none bg-[var(--purple-panel)]">
-      <div className="px-3 py-2 text-sm text-[#E6EDF3] inter flex items-center gap-2 border-b border-[#4b3b73]">
+    <div className={`input-summary-card ${variantClass}`}>
+      {/* Filename Section */}
+      <div className="input-summary-filename">
         <img
           src={getFileIconByName(filename)}
           alt="File type"
-          className="w-4 h-4 object-contain"
+          className="input-summary-file-icon"
         />
-        <span className="truncate">{filename}</span>
+        <span className="input-summary-file-name inter">
+          {filename}
+        </span>
       </div>
 
-      <div className="px-3 py-2 text-sm text-[#E6EDF3] inter flex items-center gap-2">
-        <MethodIcon className="w-4 h-4 text-[#B7A0FF]" />
-        <span>{displayMethod}</span>
+      {/* Method Section */}
+      <div className="input-summary-method">
+        <MethodIcon className="input-summary-method-icon" />
+        <span className="input-summary-method-name inter">
+          {displayMethod}
+        </span>
       </div>
 
+      {/* Question Section (only for RAG/QA) */}
       {normalizedQuestion && (
-        <div className="px-3 py-2 text-sm text-[#D2C5FF] inter italic truncate border-t border-[#4b3b73]">
-          {normalizedQuestion}
+        <div className="input-summary-question">
+          <div className="input-summary-question-text inter">
+            {normalizedQuestion}
+          </div>
         </div>
       )}
     </div>

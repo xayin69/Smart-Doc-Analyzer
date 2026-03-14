@@ -1,0 +1,310 @@
+/* =====================================================
+   WORKSPACE LAYOUT - Grid & Panels
+   ===================================================== */
+
+/* Main Workspace Container */
+.workspace-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* Starfield Background */
+.stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Main Grid Layout */
+.workspace-grid {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  min-height: 0;
+}
+
+/* =====================================================
+   GLASSMORPHISM PANELS
+   ===================================================== */
+
+.panel-glass {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(139, 92, 246, 0.08) inset,
+    0 0 18px rgba(139, 92, 246, 0.04);
+  transition: all 0.4s ease;
+}
+
+.panel-glass::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139, 92, 246, 0.1),
+    transparent
+  );
+  transition: left 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.panel-glass:hover::before {
+  left: 100%;
+}
+
+.panel-glass:hover {
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 
+    0 10px 32px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(139, 92, 246, 0.16) inset,
+    0 0 24px rgba(139, 92, 246, 0.1);
+}
+
+/* Panel with animated gradient border */
+.panel-glow {
+  position: relative;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    var(--purple-primary),
+    var(--cyan-primary),
+    var(--pink-accent),
+    var(--purple-primary)
+  );
+  background-size: 300% 300%;
+  animation: gradientShift 6s ease infinite;
+  border-radius: 1rem;
+}
+
+.panel-glow-inner {
+  background: var(--panel-bg);
+  border-radius: calc(1rem - 2px);
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* =====================================================
+   CENTER COLUMN - Stacked Layout
+   ===================================================== */
+
+.center-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 0;
+}
+
+.center-column-top {
+  flex: 1;
+  min-height: 0;
+}
+
+.center-column-bottom {
+  height: auto;
+}
+
+/* =====================================================
+   PANEL ENTRANCE ANIMATIONS
+   ===================================================== */
+
+.panel-glass {
+  animation: panelEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.panel-glass:nth-child(1) { animation-delay: 0.1s; }
+.panel-glass:nth-child(2) { animation-delay: 0.2s; }
+.panel-glass:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes panelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* =====================================================
+   RESPONSIVE LAYOUT
+   ===================================================== */
+
+@media (max-width: 1400px) {
+  .workspace-grid {
+    grid-template-columns: 260px 1fr 300px;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .workspace-grid {
+    grid-template-columns: 240px 1fr 280px;
+  }
+}
+
+@media (max-width: 900px) {
+  .workspace-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+  
+  .center-column {
+    order: 2;
+  }
+}
+
+/* =====================================================
+   LOADING STATES
+   ===================================================== */
+
+.panel-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.panel-loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139, 92, 246, 0.2),
+    transparent
+  );
+  animation: loading-shimmer 2s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* =====================================================
+   ELEVATION & DEPTH
+   ===================================================== */
+
+.elevation-1 {
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(139, 92, 246, 0.05) inset;
+}
+
+.elevation-2 {
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(139, 92, 246, 0.1) inset;
+}
+
+.elevation-3 {
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(139, 92, 246, 0.15) inset;
+}
+
+/* =====================================================
+   CYBERPUNK ACCENTS
+   ===================================================== */
+
+.accent-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--cyan-primary),
+    transparent
+  );
+  animation: accentPulse 3s ease-in-out infinite;
+}
+
+@keyframes accentPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.corner-accent {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--purple-light);
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.corner-accent.top-left {
+  top: 8px;
+  left: 8px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner-accent.top-right {
+  top: 8px;
+  right: 8px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.corner-accent.bottom-left {
+  bottom: 8px;
+  left: 8px;
+  border-right: none;
+  border-top: none;
+}
+
+.corner-accent.bottom-right {
+  bottom: 8px;
+  right: 8px;
+  border-left: none;
+  border-top: none;
+}
+
+.panel-glass:hover .corner-accent {
+  opacity: 0.7;
+}

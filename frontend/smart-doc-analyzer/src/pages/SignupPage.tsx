@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
-import "../styles/signup-animations.css";
+import "../styles/signup-login.css";
 
 const SignUpPage = () => {
   const navigate = useNavigate();

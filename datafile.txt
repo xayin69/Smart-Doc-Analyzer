@@ -8,3 +8,5 @@ to download this repo :
 git clone https://github.com/xayin69/Smart-Doc-Analyzer.git
 cd Smart-Doc-Analyzer
 then follow README.md
+
+

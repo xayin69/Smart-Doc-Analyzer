@@ -1,8 +1,35 @@
 type IconProps = { className?: string };
 
+const topicIconStyles = `
+  @keyframes libraryLoop {
+    0%, 100% { transform: translateX(0); }
+    33% { transform: translateX(1px); }
+    66% { transform: translateX(-1px); }
+  }
+
+  @keyframes book1Swap {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(2.2px); }
+  }
+
+  @keyframes book2Swap {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-2.2px); }
+  }
+
+  .animate-libraryLoop .book1 { animation: book1Swap 0.9s ease-in-out infinite; }
+  .animate-libraryLoop .book2 { animation: book2Swap 0.9s ease-in-out infinite; }
+  .animate-libraryLoop .book3 { animation: libraryLoop 0.9s ease-in-out infinite; }
+
+  .group:hover .icon-libraryLoop .book1 { animation: book1Swap 0.9s ease-in-out infinite; }
+  .group:hover .icon-libraryLoop .book2 { animation: book2Swap 0.9s ease-in-out infinite; }
+  .group:hover .icon-libraryLoop .book3 { animation: libraryLoop 0.9s ease-in-out infinite; }
+`;
+
 const TopicIcon = ({ className }: IconProps) => {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <style>{topicIconStyles}</style>
       {/* shelf */}
       <line x1="4" y1="19.2" x2="20" y2="19.2" stroke="currentColor" strokeWidth="1.4" opacity="0.55" strokeLinecap="round" />
 

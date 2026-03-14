@@ -1,8 +1,52 @@
 type IconProps = { className?: string };
 
+const ragIconStyles = `
+  .rag-line {
+    stroke-dasharray: 14;
+    stroke-dashoffset: 14;
+  }
+
+  @keyframes ragWrite {
+    0% { stroke-dashoffset: 14; opacity: 0.25; }
+    55% { stroke-dashoffset: 0; opacity: 1; }
+    100% { stroke-dashoffset: 14; opacity: 0.25; }
+  }
+
+  @keyframes ragLoop {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(0.8px); }
+  }
+
+  @keyframes ragLensPulse {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(88,166,255,0)); }
+    50% { transform: scale(1.08); filter: drop-shadow(0 0 7px rgba(88,166,255,0.55)); }
+  }
+
+  @keyframes ragBeamScan {
+    0% { transform: translateY(-2px); opacity: 0.05; }
+    40% { opacity: 0.18; }
+    100% { transform: translateY(6px); opacity: 0.02; }
+  }
+
+  .animate-ragLoop .rag-line { animation: ragWrite 1.05s ease-in-out infinite; }
+  .animate-ragLoop .rag-line-2 { animation-delay: 0.08s; }
+  .animate-ragLoop .rag-line-3 { animation-delay: 0.16s; }
+  .animate-ragLoop .rag-lines { animation: ragLoop 0.65s ease-in-out infinite; }
+  .animate-ragLoop .rag-lens { animation: ragLensPulse 0.75s ease-in-out infinite; transform-origin: center; }
+  .animate-ragLoop .rag-beam { animation: ragBeamScan 0.8s ease-in-out infinite; transform-origin: center; }
+
+  .group:hover .icon-ragLoop .rag-line { animation: ragWrite 1.05s ease-in-out infinite; }
+  .group:hover .icon-ragLoop .rag-line-2 { animation-delay: 0.08s; }
+  .group:hover .icon-ragLoop .rag-line-3 { animation-delay: 0.16s; }
+  .group:hover .icon-ragLoop .rag-lines { animation: ragLoop 0.65s ease-in-out infinite; }
+  .group:hover .icon-ragLoop .rag-lens { animation: ragLensPulse 0.75s ease-in-out infinite; transform-origin: center; }
+  .group:hover .icon-ragLoop .rag-beam { animation: ragBeamScan 0.8s ease-in-out infinite; transform-origin: center; }
+`;
+
 const RagIcon = ({ className }: IconProps) => {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <style>{ragIconStyles}</style>
       {/* doc */}
       <path
         d="M6.2 4.8h7.2l3.4 3.4v10.9c0 1-0.8 1.8-1.8 1.8H6.2c-1 0-1.8-0.8-1.8-1.8V6.6c0-1 0.8-1.8 1.8-1.8z"

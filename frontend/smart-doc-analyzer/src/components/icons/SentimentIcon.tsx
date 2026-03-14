@@ -1,8 +1,45 @@
 type IconProps = { className?: string };
 
+const sentimentIconStyles = `
+  .mouth { opacity: 0; }
+  .mouth-happy { opacity: 1; }
+
+  @keyframes mouthHappy {
+    0%, 28% { opacity: 1; }
+    33%, 100% { opacity: 0; }
+  }
+
+  @keyframes mouthNeutral {
+    0%, 32% { opacity: 0; }
+    33%, 64% { opacity: 1; }
+    65%, 100% { opacity: 0; }
+  }
+
+  @keyframes mouthSad {
+    0%, 64% { opacity: 0; }
+    65%, 100% { opacity: 1; }
+  }
+
+  @keyframes tearShow {
+    0%, 70% { opacity: 0; }
+    71%, 100% { opacity: 0.55; }
+  }
+
+  .animate-moodLoop .mouth-happy { animation: mouthHappy 1.35s ease-in-out infinite; }
+  .animate-moodLoop .mouth-neutral { animation: mouthNeutral 1.35s ease-in-out infinite; }
+  .animate-moodLoop .mouth-sad { animation: mouthSad 1.35s ease-in-out infinite; }
+  .animate-moodLoop .tear { animation: tearShow 1.35s ease-in-out infinite; }
+
+  .group:hover .icon-moodLoop .mouth-happy { animation: mouthHappy 1.35s ease-in-out infinite; }
+  .group:hover .icon-moodLoop .mouth-neutral { animation: mouthNeutral 1.35s ease-in-out infinite; }
+  .group:hover .icon-moodLoop .mouth-sad { animation: mouthSad 1.35s ease-in-out infinite; }
+  .group:hover .icon-moodLoop .tear { animation: tearShow 1.35s ease-in-out infinite; }
+`;
+
 const SentimentIcon = ({ className }: IconProps) => {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <style>{sentimentIconStyles}</style>
       {/* base face */}
       <g stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="8" />

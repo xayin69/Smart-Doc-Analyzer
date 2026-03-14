@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
-import "../styles/signup-animations.css";
+import "../styles/signup-login.css";
 
 const socialIcons = [
   {

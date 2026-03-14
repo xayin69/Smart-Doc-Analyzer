@@ -1,0 +1,580 @@
+/* =====================================================
+   UPLOAD PANEL - Upload Area, Chatbox, Task Buttons
+   ===================================================== */
+
+/* Upload Container */
+.upload-container {
+  padding: 1rem;
+  position: relative;
+}
+
+/* =====================================================
+   UPLOAD DROP ZONE
+   ===================================================== */
+
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  border: 2px dashed rgba(139, 92, 246, 0.3);
+  border-radius: 1rem;
+  padding: 2rem;
+  min-height: 100px;
+  height: 110px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(15, 15, 20, 0.4);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-dropzone.uploaded {
+  min-height: 126px;
+  height: 126px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.upload-dropzone::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent,
+    rgba(139, 92, 246, 0.05),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.upload-dropzone:hover {
+  border-color: var(--cyan-primary);
+  background: rgba(20, 20, 30, 0.6);
+  box-shadow: 
+    0 0 20px rgba(34, 211, 238, 0.1),
+    0 0 0 1px rgba(34, 211, 238, 0.1) inset;
+}
+
+.upload-dropzone:hover::before {
+  opacity: 1;
+}
+
+.upload-dropzone.dragging {
+  border-color: var(--cyan-light);
+  border-width: 3px;
+  background: rgba(34, 211, 238, 0.1);
+  box-shadow: 
+    0 0 30px rgba(34, 211, 238, 0.2),
+    0 0 0 2px rgba(34, 211, 238, 0.2) inset;
+  animation: dropzonePulse 1s ease-in-out infinite;
+}
+
+@keyframes dropzonePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Upload Icon & Text */
+.upload-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 0.75rem;
+  color: var(--cyan-primary);
+  transition: all 0.3s ease;
+}
+
+.upload-dropzone:hover .upload-icon {
+  transform: translateY(-4px) scale(1.1);
+  filter: drop-shadow(0 4px 12px rgba(34, 211, 238, 0.5));
+}
+
+.upload-text-primary {
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.upload-text-secondary {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+/* Uploaded File Display */
+.upload-file-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  width: 100%;
+  animation: fileAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.upload-file-display .upload-icon {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+}
+
+.upload-file-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 260px;
+}
+
+@keyframes fileAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.upload-file-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.upload-file-info {
+  text-align: left;
+}
+
+.upload-file-status {
+  color: var(--cyan-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.12rem;
+  line-height: 1.1;
+}
+
+.upload-file-name {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  max-width: 190px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* =====================================================
+   CHATBOX & ANALYZE BUTTON
+   ===================================================== */
+
+.chat-or-analyze-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  animation: swapMorph 0.3s ease;
+}
+
+@keyframes swapMorph {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Analyze Button (Non-RAG Mode) */
+.analyze-button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.chatbox-wrap {
+  width: 100%;
+}
+
+.chatbox-wrap #poda,
+.chatbox-wrap #main {
+  width: 100%;
+}
+
+.analyze-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 45px;
+  padding: 0 1.5rem;
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(25, 25, 30, 0.9));
+  border: 2px solid transparent;
+  border-radius: 999px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.1);
+  backdrop-filter: blur(8px);
+  z-index: 0;
+}
+
+.analyze-button::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(
+    from 0deg,
+    var(--cyan-primary),
+    var(--pink-accent),
+    var(--purple-primary),
+    var(--cyan-primary)
+  );
+  animation: analyzeBorderRotate 4s linear infinite;
+  z-index: -2;
+  border-radius: 999px;
+}
+
+.analyze-button::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: #0a0a0a;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+@keyframes analyzeBorderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.analyze-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.3);
+}
+
+.analyze-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.analyze-button:disabled::before {
+  animation-play-state: paused;
+}
+
+.analyze-button-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+  color: var(--cyan-primary);
+}
+
+.analyze-button:hover:not(:disabled) .analyze-button-icon {
+  transform: translateY(-3px);
+}
+
+/* =====================================================
+   TASK METHOD BUTTONS
+   ===================================================== */
+
+.task-methods-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+}
+
+.task-method-button {
+  position: relative;
+  padding: 2px;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--purple-primary), var(--pink-accent));
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 4px 12px rgba(139, 92, 246, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.task-method-button:hover:not(.active) {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 6px 20px rgba(139, 92, 246, 0.3);
+}
+
+/* Animated Border Ring */
+.task-border-ring {
+  position: absolute;
+  inset: -3px;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 0.85rem;
+  opacity: 0;
+  background: conic-gradient(
+    from 0deg,
+    var(--cyan-primary),
+    transparent 40%,
+    var(--pink-accent),
+    transparent 80%,
+    var(--cyan-primary)
+  );
+  transition: opacity 0.3s ease;
+}
+
+.task-method-button:hover:not(.active) .task-border-ring {
+  opacity: 1;
+  animation: taskBorderSpin 1s linear infinite;
+}
+
+@keyframes taskBorderSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Glow Halo */
+.task-glow-halo {
+  position: absolute;
+  z-index: 0;
+  inset: -20%;
+  pointer-events: none;
+  border-radius: 999px;
+  background: conic-gradient(
+    from 0deg,
+    var(--cyan-primary),
+    var(--pink-accent),
+    var(--cyan-primary)
+  );
+  filter: blur(25px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.task-method-button.active .task-glow-halo {
+  opacity: 0.4;
+  animation: taskHaloRotate 3s linear infinite;
+}
+
+@keyframes taskHaloRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Inner Content */
+.task-method-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: calc(0.75rem - 2px);
+  background: rgba(5, 8, 15, 0.95);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  min-width: 110px;
+  transition: all 0.3s ease;
+}
+
+.task-method-button.active .task-method-inner {
+  background: rgba(124, 58, 237, 0.3);
+  border-color: var(--purple-light);
+}
+
+.task-method-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.task-method-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  transition: color 0.3s ease;
+}
+
+.task-method-button.active .task-method-label {
+  color: white;
+  font-weight: 600;
+}
+
+/* Shine Effect */
+.task-shine {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: skewX(-12deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.task-method-button:hover .task-shine {
+  left: 100%;
+}
+
+/* More Methods Button */
+.more-methods-button {
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.more-methods-button:hover {
+  color: var(--text);
+  background: rgba(139, 92, 246, 0.1);
+}
+
+/* =====================================================
+   ERROR TOAST
+   ===================================================== */
+
+.upload-error-toast {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  animation: uploadErrorToast 5s ease forwards;
+}
+
+.upload-error-content {
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--error), #dc2626);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 
+    0 8px 24px rgba(239, 68, 68, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+@keyframes uploadErrorToast {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30px);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  88% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+
+/* =====================================================
+   DRAG OVERLAY
+   ===================================================== */
+
+.drag-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  pointer-events: none;
+  animation: dragOverlayAppear 0.2s ease;
+}
+
+@keyframes dragOverlayAppear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.drag-overlay-text {
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  background: rgba(22, 27, 34, 0.9);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--purple-primary);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 900px) {
+  .upload-container {
+    padding: 1rem;
+  }
+  
+  .upload-dropzone {
+    padding: 1.5rem;
+  }
+  
+  .task-methods-container {
+    gap: 0.5rem;
+  }
+  
+  .task-method-inner {
+    padding: 0.6rem 0.8rem;
+    min-width: 90px;
+  }
+}

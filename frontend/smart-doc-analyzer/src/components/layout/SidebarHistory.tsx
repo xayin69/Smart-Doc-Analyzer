@@ -1,10 +1,11 @@
 ﻿import { useEffect, useState } from "react";
-import { AlertTriangle, FileMinusCorner, History } from "lucide-react";
+import { AlertTriangle, History, Search, Trash2 } from "lucide-react";
 
 import api from "../../api/axios";
 import type { HistoryDocument } from "../../types/document";
 import { useWorkspaceStore } from "../../store/workspaceStore";
 import { getFileIconByName } from "../../utils/fileIcons";
+import "./WorkSpacestyles/sidebar-history.css";
 
 const SidebarHistory = () => {
   const [search, setSearch] = useState("");
@@ -30,6 +31,16 @@ const SidebarHistory = () => {
     doc.filename.toLowerCase().includes(search.toLowerCase())
   );
 
+  const formatDate = (createdAt: string) => {
+    const d = new Date(createdAt);
+    return d.toLocaleDateString([], { dateStyle: "medium" });
+  };
+
+  const formatTime = (createdAt: string) => {
+    const d = new Date(createdAt);
+    return d.toLocaleTimeString([], { timeStyle: "short" });
+  };
+
   const handleDeleteDocument = async (documentId: number) => {
     setDeletingId(documentId);
 
@@ -54,26 +65,33 @@ const SidebarHistory = () => {
   };
 
   return (
-    <div className="h-full flex flex-col p-6 inter">
-      <h2 className="text-lg mb-4 text-[#E6EDF3] flex items-center gap-2 alyamama">
-        <History className="w-5 h-5 text-[#58A6FF]" />
-        <span>History</span>
-      </h2>
+    <div className="sidebar-container">
+      <div className="sidebar-header">
+        <h3 className="sidebar-title alyamama">
+          <History className="sidebar-title-icon" />
+          History
+        </h3>
 
-      <input
-        type="text"
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="mb-4 px-3 py-2 rounded-none bg-[#0D1117] border border-[#30363D] text-[#E6EDF3] text-sm placeholder-[#8B949E] focus:outline-none focus:border-[#58A6FF]"
-      />
+        <div className="sidebar-search">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="sidebar-search-input inter"
+          />
+          <Search className="sidebar-search-icon" />
+        </div>
+      </div>
 
-      <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+      <div className="sidebar-list">
+        {filteredDocs.length === 0 && (
+          <div className="sidebar-list-empty inter">No documents yet</div>
+        )}
         {filteredDocs.map((doc) => {
           const isActive = selectedDocument?.document_id === doc.document_id;
           const showConfirm = confirmDeleteId === doc.document_id;
           const isDeleting = deletingId === doc.document_id;
-          const createdAt = new Date(doc.created_at);
 
           return (
             <div
@@ -81,24 +99,38 @@ const SidebarHistory = () => {
               className={isDeleting ? "animate-fadeOutDisintegrate" : ""}
             >
               <div
-                className={`flex items-center justify-between px-3 py-3 rounded-none cursor-pointer transition-all duration-200 border ${
-                  isActive
-                    ? "bg-[#1C2128] border-[#58A6FF] text-white"
-                    : "bg-[#161B22] border-[#30363D] text-[#E6EDF3] hover:bg-[#1C2128]"
-                }`}
+                className={`document-item ${isActive ? "active" : ""}`}
+                onClick={() => selectDocument(doc)}
               >
-                <div onClick={() => selectDocument(doc)} className="flex-1 min-w-0">
-                  <p className="text-sm truncate flex items-center gap-2 alyamama">
-                    <img
-                      src={getFileIconByName(doc.filename)}
-                      alt="file"
-                      className="w-4 h-4 object-contain"
-                    />
-                    <span>{doc.filename}</span>
-                  </p>
-                  <div className="text-xs text-[#8B949E] mt-1 flex justify-between">
-                    <span>Date: {createdAt.toLocaleDateString()}</span>
-                    <span>Time: {createdAt.toLocaleTimeString()}</span>
+                <div className="document-item-content">
+                  <img
+                    src={getFileIconByName(doc.filename)}
+                    alt="file"
+                    className="document-icon"
+                  />
+
+                  <div className="document-info">
+                    <div className="document-top-row">
+                      <span className="document-name inter">
+                        {doc.filename}
+                      </span>
+                      {doc.tasks?.length > 0 && (
+                        <span className="document-badge">
+                          {doc.tasks.length} tasks
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="document-meta">
+                      <span className="document-date inter">
+                      <span className="text-[#8B949E]">Date : </span>
+                      {formatDate(doc.created_at)}
+                    </span>
+                      <span className="document-date inter">
+                      <span className="text-[#8B949E]">Time : </span>
+                      {formatTime(doc.created_at)}
+                    </span>
+                    </div>
                   </div>
                 </div>
 
@@ -107,10 +139,10 @@ const SidebarHistory = () => {
                     e.stopPropagation();
                     setConfirmDeleteId(doc.document_id);
                   }}
-                  className="ml-3 text-[#8B949E] hover:text-red-300 transition"
+                  className="document-delete-btn"
                   aria-label="Delete document"
                 >
-                  <FileMinusCorner className="w-4 h-4" />
+                  <Trash2 size={14} />
                 </button>
               </div>
 
